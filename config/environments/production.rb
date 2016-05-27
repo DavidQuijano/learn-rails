@@ -1,20 +1,18 @@
 Rails.application.configure do
 
-  config.action_mailer.default_url_options = { :host => 'example.com' }
-  #ActionMailer Config
-  
-  #Setup for production - deliveries, no errors raised
+# email enabled in production
+  config.action_mailer.smtp_settings = {
+    address: "smtp.sendgrid.com",
+    port: 587,
+    domain: Rails.application.secrets.domain_name
+    user_name: Rails.application.secrets.email_provider_username,
+    password: Rails.application.secrets.email_provider_password
+}
+#ActionMailer Config
+  config.action_mailer.default_url_options = { :host => Rails.application.secrets.domain_name }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default :charset => "utf-8"
-  
-  config.action_mailer.smtp_settings = {
-    :address   => "smtp.mandrillapp.com",
-    :port      => 587,
-    :user_name => ENV["MANDRILL_USERNAME"],
-    :password  => ENV["MANDRILL_API_KEY"]
-}
 
   # Settings specified here will take precedence over those in config/application.rb.
 
